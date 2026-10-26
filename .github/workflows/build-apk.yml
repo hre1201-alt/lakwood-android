@@ -25,8 +25,11 @@ jobs:
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Extract project
+      
         run: unzip -o lakwood_android_project_chrome.zip -d .
-
+      - name: Fix Kotlin property
+        run: |
+          sed -i 's/singleLine/isSingleLine/g' lakwood_android_app/app/src/main/java/ir/lakwood/store/MainActivity.kt
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'

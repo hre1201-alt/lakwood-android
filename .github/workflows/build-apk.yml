@@ -16,9 +16,10 @@ jobs:
           java-version: '17'
 
       - uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        with:
+          accept-android-sdk-licenses: true
+          api-level: 35
+          build-tools: '35.0.0'
 
       - name: Extract project
         run: unzip -o lakwood_android_project_chrome.zip -d .

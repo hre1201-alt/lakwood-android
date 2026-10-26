@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+
     steps:
       - uses: actions/checkout@v4
 
@@ -15,11 +18,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
-          api-level: 35
-          build-tools: '35.0.0'
+      - name: Accept licenses and install SDK
+        run: |
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Extract project
         run: unzip -o lakwood_android_project_chrome.zip -d .
